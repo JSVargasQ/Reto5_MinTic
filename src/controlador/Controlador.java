@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import modelo.BaseDatos;
-import view.Inicio;
-import view.VentanaPrincipal;
+import vista.Inicio;
+import vista.VentanaPrincipal;
 
 public class Controlador implements ActionListener {
 
@@ -21,11 +21,11 @@ public class Controlador implements ActionListener {
     }
 
     public void asignarOyentes() {
-        vista.getPanel().getBotonIngresar().addActionListener(this);
+        /**vista.getPanel().getBotonIngresar().addActionListener(this);
         vista.getPanel().getBotonVerListado().addActionListener(this);
         vista.getPanel().getBotonBuscarId().addActionListener(this);
         inicio.getPinicio().getB_ingresar().addActionListener(this);
-        inicio.getPinicio().getB_cancelar().addActionListener(this);
+        inicio.getPinicio().getB_cancelar().addActionListener(this);**/
     }
 
     @Override
@@ -33,11 +33,11 @@ public class Controlador implements ActionListener {
         bd = new BaseDatos();
         if (e.getActionCommand().equals("INGRESAR")) {
             try {
-                String Nombre = vista.getPanel().getCampoNombre().getText();
-                int id = Integer.parseInt(vista.getPanel().getCampoDocumento().getText());
+                //String Nombre = vista.getPanel().getCampoNombre().getText();
+                //int id = Integer.parseInt(vista.getPanel().getCampoDocumento().getText());
                 bd.EstableciendoConexion();
-                String respuesta = bd.InsertarRegistro(id, Nombre);
-                vista.mostrarInformacion(respuesta);
+                //String respuesta = bd.InsertarRegistro(id, Nombre);
+                //vista.mostrarInformacion(respuesta);
             } catch (Exception ex) {
                 System.out.println("Problema al insertar la información.");
             }
@@ -52,7 +52,7 @@ public class Controlador implements ActionListener {
                 while (rs.next()) {
                     resultados += rs.getString(1) + " -  " + rs.getString(2) + "\n";
                 }
-                vista.mostrarInformacion(resultados);
+                //vista.mostrarInformacion(resultados);
             } catch (Exception ex) {
                 System.out.println("Problema al imprimir la información.");
             }
@@ -62,19 +62,21 @@ public class Controlador implements ActionListener {
             String string = "";
 
             bd.EstableciendoConexion();
-            int id = Integer.parseInt(vista.capturarInformacion("Ingrese ID a buscar:"));
-            rs = bd.consultarID(id);
+            //int id = Integer.parseInt(vista.capturarInformacion("Ingrese ID a buscar:"));
+            //rs = bd.consultarID(id);
 
             try {
                 while (rs.next()) {
                     string += rs.getString(2) + "\n";
                 }
-                vista.mostrarInformacion(string);
+                //vista.mostrarInformacion(string);
             } catch (Exception ex) {
                 System.out.println("Problema al imprimir la información.");
             }
             bd.closeConnection();
-        } else if (e.getActionCommand().equals("cancelar")) {
+        } 
+        /**
+        else if (e.getActionCommand().equals("cancelar")) {
             vista.mostrarInformacion("Hasta luego");
             System.exit(0);
         } else if (e.getActionCommand().equals("login")) {
@@ -89,6 +91,6 @@ public class Controlador implements ActionListener {
                 inicio.getPinicio().getContraseña().setText("");
                 vista.mostrarInformacion("Usuario y/o Contraseña errados. Ingrese nuevamente la información");
             }
-        }
+        } **/
     }
 }
