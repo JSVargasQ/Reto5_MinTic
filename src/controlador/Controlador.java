@@ -26,7 +26,7 @@ public class Controlador implements ActionListener {
 		vista = new VentanaPrincipal();
 		inicio = new Inicio();
 		bd = new BaseDatos();
-		pruebaConexion();
+		//pruebaConexion();
                 
 		this._asignarOyentes();
 	}
@@ -37,20 +37,18 @@ public class Controlador implements ActionListener {
 
 	public void pruebaConexion() {
 		bd.EstableciendoConexion();
-		System.out.println(bd.getDato(1001, "nombre"));
-                System.out.println(bd.getDato(1001, "categoria"));
-		System.out.println(bd.getDato(1001, "valorCompra"));
-		System.out.println(bd.getDato(1001, "valorVenta"));
-		System.out.println(bd.getDato(1001, "cantidadProducto"));
-		
-                bd.setDatoV2(1001, "valorVenta", 5);
-		System.out.println(bd.getDato(1001, "nombre"));
-		System.out.println(bd.getDato(1001, "valorVenta"));
-                bd.borrarRegistro(1002);
-                bd.InsertarRegistro(1005, "Metro", "Herramientas", 20000, 23000, 2);
-                System.out.println(bd.getDato(1003, "nombre"));
-                System.out.println(bd.getDato(1005, "nombre"));
-                
+		System.out.println(bd.getDato(1004, "nombre"));
+                System.out.println(bd.getDato(1004, "categoria"));
+		System.out.println(bd.getDato(1004, "valorCompra"));
+		System.out.println(bd.getDato(1004, "valorVenta"));
+		System.out.println(bd.getDato(1004, "cantidadProducto"));
+                //bd.setDatoV2(1001, "valorVenta", "5");
+		//System.out.println(bd.getDato(1001, "nombre"));
+		//System.out.println(bd.getDato(1001, "valorVenta"));
+                bd.borrarRegistro(1006);
+                bd.InsertarRegistro(1006, "Metro", "Herramientas", 20000, 23000, 2);
+                System.out.println(bd.getDato(1004, "nombre"));
+                System.out.println(bd.getDato(1004, "nombre"));
 		bd.closeConnection();
                 
 	}

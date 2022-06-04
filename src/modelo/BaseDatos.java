@@ -37,8 +37,7 @@ public class BaseDatos {
         String iploc = mispropiedades.getProperty("IPLocal");
         String user = mispropiedades.getProperty("usuario");
         String pass = mispropiedades.getProperty("pass");
-        String url = "jdbc:mysql://" + iploc + ":3306/" + db;
-
+        String url = "jdbc:mysql://" + iploc + ":3306/" + db + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -153,7 +152,7 @@ public class BaseDatos {
         }
     }
     //Metodo para actualizar campos de valores numericos
-    public void setDatoV2(int id, String columna, int dato){
+    public void setDatoV2(int id, String columna, String dato){
         try{
             String Query = "UPDATE ferreteria SET " +columna  + " = " + dato + " WHERE referencia =  " + id + ";";
             Statement st = conexion.createStatement();
