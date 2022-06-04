@@ -17,9 +17,25 @@ public class Controlador implements ActionListener {
         vista = new VentanaPrincipal();
         inicio = new Inicio();
         bd = new BaseDatos();
+        pruebaConexion();
         asignarOyentes();
     }
 
+    public void pruebaConexion(){
+        bd.EstableciendoConexion();
+        System.out.println(bd.getDato(1, "nombre"));
+        System.out.println(bd.getDato(1, "valor_compra"));
+        System.out.println(bd.getDato(1, "valor_venta"));
+        System.out.println(bd.getDato(1, "cantidad"));
+        System.out.println(bd.getDato(1, "categoria"));
+        bd.setDato(1, "nombre", "Martillo");
+        bd.setDatoV2(1, "valor_compra", 20000);
+        System.out.println(bd.getDato(1, "nombre"));
+        System.out.println(bd.getDato(1, "valor_compra"));
+        //System.out.println(bd.Vertodos("producto"));
+        bd.closeConnection();
+    }
+    
     public void asignarOyentes() {
         /**vista.getPanel().getBotonIngresar().addActionListener(this);
         vista.getPanel().getBotonVerListado().addActionListener(this);
