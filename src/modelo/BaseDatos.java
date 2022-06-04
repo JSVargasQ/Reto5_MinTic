@@ -98,10 +98,11 @@ public class BaseDatos {
             ps.setInt(5, valorVenta);
             ps.setInt(6, cantidadProducto);
             int contador = ps.executeUpdate();
+            System.out.println("contador " + contador);
             if (contador > 0) {
                 return "Se agregó el registro de manera exitosa";
             } else {
-                return "Ocurrio un problema al agregar el registro";
+                return "Ocurrió un problema al agregar el registro";
 
             }
         } catch (SQLException e) {

@@ -3,6 +3,7 @@ package vista;
 import java.awt.Color;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -27,6 +28,10 @@ public class VentanaPrincipal extends JFrame {
 	// Public methods
 	// ============================================
 	
+        public void mostrarInformacion(String mensaje) {
+            JOptionPane.showMessageDialog(null, mensaje);
+        }
+
 	// ============================================
 	// Private methods
 	// ============================================
