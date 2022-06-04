@@ -5,108 +5,80 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import modelo.BaseDatos;
 import vista.Inicio;
+import vista.InicioPanelAcciones;
 import vista.VentanaPrincipal;
 
 public class Controlador implements ActionListener {
 
-    private VentanaPrincipal vista;
-    private Inicio inicio;
-    private BaseDatos bd;
+	// ============================================
+	// Attributes
+	// ============================================
 
-    public Controlador() {
-        vista = new VentanaPrincipal();
-        inicio = new Inicio();
-        bd = new BaseDatos();
-        pruebaConexion();
-        asignarOyentes();
-    }
+	private VentanaPrincipal vista;
+	private Inicio inicio;
+	private BaseDatos bd;
 
-    public void pruebaConexion(){
-        bd.EstableciendoConexion();
-        System.out.println(bd.getDato(1, "nombre"));
-        System.out.println(bd.getDato(1, "valor_compra"));
-        System.out.println(bd.getDato(1, "valor_venta"));
-        System.out.println(bd.getDato(1, "cantidad"));
-        System.out.println(bd.getDato(1, "categoria"));
-        bd.setDato(1, "nombre", "Martillo");
-        bd.setDatoV2(1, "valor_compra", 20000);
-        System.out.println(bd.getDato(1, "nombre"));
-        System.out.println(bd.getDato(1, "valor_compra"));
-        //System.out.println(bd.Vertodos("producto"));
-        bd.closeConnection();
-    }
-    
-    public void asignarOyentes() {
-        /**vista.getPanel().getBotonIngresar().addActionListener(this);
-        vista.getPanel().getBotonVerListado().addActionListener(this);
-        vista.getPanel().getBotonBuscarId().addActionListener(this);
-        inicio.getPinicio().getB_ingresar().addActionListener(this);
-        inicio.getPinicio().getB_cancelar().addActionListener(this);**/
-    }
+	// ============================================
+	// Constructor
+	// ============================================
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        bd = new BaseDatos();
-        if (e.getActionCommand().equals("INGRESAR")) {
-            try {
-                //String Nombre = vista.getPanel().getCampoNombre().getText();
-                //int id = Integer.parseInt(vista.getPanel().getCampoDocumento().getText());
-                bd.EstableciendoConexion();
-                //String respuesta = bd.InsertarRegistro(id, Nombre);
-                //vista.mostrarInformacion(respuesta);
-            } catch (Exception ex) {
-                System.out.println("Problema al insertar la información.");
-            }
-            bd.closeConnection();
-        } else if (e.getActionCommand().equals("VER")) {
-            ResultSet rs = null;
-            String resultados = "";
+	public Controlador() {
+		vista = new VentanaPrincipal();
+		inicio = new Inicio();
+		bd = new BaseDatos();
+		pruebaConexion();
 
-            bd.EstableciendoConexion();
-            rs = bd.Vertodos();
-            try {
-                while (rs.next()) {
-                    resultados += rs.getString(1) + " -  " + rs.getString(2) + "\n";
-                }
-                //vista.mostrarInformacion(resultados);
-            } catch (Exception ex) {
-                System.out.println("Problema al imprimir la información.");
-            }
-            bd.closeConnection();
-        } else if (e.getActionCommand().equals("ID")) {
-            ResultSet rs = null;
-            String string = "";
+		this._asignarOyentes();
+	}
 
-            bd.EstableciendoConexion();
-            //int id = Integer.parseInt(vista.capturarInformacion("Ingrese ID a buscar:"));
-            //rs = bd.consultarID(id);
+	// ============================================
+	// Public methods
+	// ============================================
 
-            try {
-                while (rs.next()) {
-                    string += rs.getString(2) + "\n";
-                }
-                //vista.mostrarInformacion(string);
-            } catch (Exception ex) {
-                System.out.println("Problema al imprimir la información.");
-            }
-            bd.closeConnection();
-        } 
-        /**
-        else if (e.getActionCommand().equals("cancelar")) {
-            vista.mostrarInformacion("Hasta luego");
-            System.exit(0);
-        } else if (e.getActionCommand().equals("login")) {
-            String us = inicio.getPinicio().getUsuario().getText();
-            String co = inicio.getPinicio().getContraseña().getText();
-            if (us.equals("admin") && co.equals("12345")) {
-                vista.mostrarInformacion("Ingresando a la aplicación");
-                inicio.setVisible(false);
-                vista.setVisible(true);
-            } else {
-                inicio.getPinicio().getUsuario().setText("");
-                inicio.getPinicio().getContraseña().setText("");
-                vista.mostrarInformacion("Usuario y/o Contraseña errados. Ingrese nuevamente la información");
-            }
-        } **/
-    }
+	public void pruebaConexion() {
+		bd.EstableciendoConexion();
+		System.out.println(bd.getDato(1, "nombre"));
+		System.out.println(bd.getDato(1, "valor_compra"));
+		System.out.println(bd.getDato(1, "valor_venta"));
+		System.out.println(bd.getDato(1, "cantidad"));
+		System.out.println(bd.getDato(1, "categoria"));
+		bd.setDato(1, "nombre", "Martillo");
+		bd.setDatoV2(1, "valor_compra", 20000);
+		System.out.println(bd.getDato(1, "nombre"));
+		System.out.println(bd.getDato(1, "valor_compra"));
+		// System.out.println(bd.Vertodos("producto"));
+		bd.closeConnection();
+	}
+
+	// ============================================
+	// Private methods
+	// ============================================
+
+	private void _asignarOyentes() {
+		this.inicio.getInicioPapelAcciones().getBtnIngresar().addActionListener(this);
+	}
+
+	// ============================================
+	// Action Listener
+	// ============================================
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// bd = new BaseDatos();
+		String actionCommand = e.getActionCommand();
+		System.out.println(actionCommand);
+
+		// Login - Inicio
+		if (actionCommand.equals(InicioPanelAcciones.BTN_LOGIN_INICIO)) {
+			// Get username & password
+			String username = this.inicio.getPanelInicio().getTxtUsuario().getText();
+			String password = this.inicio.getPanelInicio().getPassContrasena().getText();
+
+			System.out.println("aaa");
+			System.out.println(username + " - " + password);
+
+			// this.inicio.setVisible(false);
+			// this.vista.setVisible(true);
+		}
+	}
 }
