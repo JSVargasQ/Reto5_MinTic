@@ -1,10 +1,14 @@
+CREATE DATABASE inventario;
+
+USE inventario;
+
 CREATE TABLE ferreteria (
 	referencia INT PRIMARY KEY,
 	nombre varchar (50) NOT NULL,
-    categoria varchar (50) NOT NULL,
-    valorCompra INT,
-    valorVenta INT,
-    cantidadProducto INT
+        categoria varchar (50) NOT NULL,
+        valorCompra INT,
+        valorVenta INT,
+        cantidadProducto INT
     
     );
 
@@ -16,4 +20,4 @@ INSERT INTO ferreteria (referencia, nombre, categoria, valorCompra, valorVenta, 
     
 INSERT INTO ferreteria (referencia, nombre, categoria, valorCompra, valorVenta, cantidadProducto) VALUES (1004, "Tubo 3/8 x metro", "PVC", 5000, 7000, 100);
         
-select * from inventarioProductos;      
+select * from ferreteria;      

@@ -37,16 +37,22 @@ public class Controlador implements ActionListener {
 
 	public void pruebaConexion() {
 		bd.EstableciendoConexion();
-		System.out.println(bd.getDato(1, "nombre"));
-		System.out.println(bd.getDato(1, "valor_compra"));
-		System.out.println(bd.getDato(1, "valor_venta"));
-		System.out.println(bd.getDato(1, "cantidad"));
-		System.out.println(bd.getDato(1, "categoria"));
-                bd.setDatoV2(1, "valor_venta", 5);
-		System.out.println(bd.getDato(1, "nombre"));
-		System.out.println(bd.getDato(1, "valor_venta"));
-                bd.borrarRegistro(3);
+		System.out.println(bd.getDato(1001, "nombre"));
+                System.out.println(bd.getDato(1001, "categoria"));
+		System.out.println(bd.getDato(1001, "valorCompra"));
+		System.out.println(bd.getDato(1001, "valorVenta"));
+		System.out.println(bd.getDato(1001, "cantidadProducto"));
+		
+                bd.setDatoV2(1001, "valorVenta", 5);
+		System.out.println(bd.getDato(1001, "nombre"));
+		System.out.println(bd.getDato(1001, "valorVenta"));
+                bd.borrarRegistro(1002);
+                bd.InsertarRegistro(1005, "Metro", "Herramientas", 20000, 23000, 2);
+                System.out.println(bd.getDato(1003, "nombre"));
+                System.out.println(bd.getDato(1005, "nombre"));
+                
 		bd.closeConnection();
+                
 	}
 
 	// ============================================
@@ -63,10 +69,10 @@ public class Controlador implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// bd = new BaseDatos();
+		bd = new BaseDatos();
 		String actionCommand = e.getActionCommand();
 		System.out.println(actionCommand);
-
+                
 		// Login - Inicio
 		if (actionCommand.equals(InicioPanelAcciones.BTN_LOGIN_INICIO)) {
 			// Get username & password
