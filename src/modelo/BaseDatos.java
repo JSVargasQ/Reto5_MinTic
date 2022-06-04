@@ -60,24 +60,23 @@ public class BaseDatos {
     public ResultSet Vertodos() {
         PreparedStatement ps;
         ResultSet rs = null;
-        String sql = "SELECT * FROM persona";
+        String sql = "SELECT * FROM producto";
         try {
             ps = conexion.prepareStatement(sql);
             rs = ps.executeQuery();
         } catch (SQLException e) {
             System.out.println("Problema Buscando La Base de Dtos");
         }
-
         return rs;
     }
     
-    public ResultSet consultarID(int id, String tabla) {
+    public ResultSet consultarID(int id) {
         PreparedStatement ps;
         ResultSet rs = null;
-        String sql = "SELECT * FROM " + tabla + " WHERE id = " + id + ";";
-        System.out.println(sql);
+        String sql = "SELECT * FROM producto WHERE idproducto = ? ";
         try {
             ps = conexion.prepareStatement(sql);
+            ps.setInt(1, id);
             rs = ps.executeQuery();
         } catch (SQLException e) {
             System.out.println("Problema Buscando La Base de Datos");
@@ -106,6 +105,19 @@ public class BaseDatos {
 
     }
     
+    //Metodo para borrar registros
+    public void borrarRegistro(int id){
+        try{
+            String Query = "DElETE FROM producto WHERE idproducto = " + id + ";";
+            Statement st = conexion.createStatement();
+            st.executeUpdate(Query);
+            if(st.getUpdateCount() == 1){
+                System.out.println("Dato Eliminado");
+            }
+        }catch (SQLException ex){
+            System.out.println(ex);
+        }
+    }
     //Por medio de la columna y el codigo retorna el dato a consultar de la base de datos en forma de String
     public String getDato(int id, String columna){
         String dato = "";
@@ -122,28 +134,30 @@ public class BaseDatos {
         return dato;
     }  
     //Metodo para actualizar campos de texto
-    public int setDato(int id, String columna, String dato){
-        int bandera = 0;
+    public void setDato(int id, String columna, String dato){
         try{
             String Query = "UPDATE producto SET " +columna  + " = " + "'" + dato + "'" + " WHERE idproducto =  " + id + ";";
             Statement st = conexion.createStatement();
             st.executeUpdate(Query);
+            if(st.getUpdateCount() == 1){
+                System.out.println("Dato actualizado");
+            }
         }catch (SQLException ex){
             System.out.println(ex);
         }
-        return bandera;
     }
     //Metodo para actualizar campos de valores numericos
-    public int setDatoV2(int id, String columna, int dato){
-        int bandera = 0;
+    public void setDatoV2(int id, String columna, int dato){
         try{
             String Query = "UPDATE producto SET " +columna  + " = " + dato + " WHERE idproducto =  " + id + ";";
             Statement st = conexion.createStatement();
             st.executeUpdate(Query);
+            if(st.getUpdateCount() == 1){
+                System.out.println("Dato actualizado");
+            }
         }catch (SQLException ex){
             System.out.println(ex);
         }
-        return bandera;
     }
 
 }

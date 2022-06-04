@@ -27,7 +27,7 @@ public class Controlador implements ActionListener {
 		inicio = new Inicio();
 		bd = new BaseDatos();
 		pruebaConexion();
-
+                
 		this._asignarOyentes();
 	}
 
@@ -42,11 +42,10 @@ public class Controlador implements ActionListener {
 		System.out.println(bd.getDato(1, "valor_venta"));
 		System.out.println(bd.getDato(1, "cantidad"));
 		System.out.println(bd.getDato(1, "categoria"));
-		bd.setDato(1, "nombre", "Martillo");
-		bd.setDatoV2(1, "valor_compra", 20000);
+                bd.setDatoV2(1, "valor_venta", 5);
 		System.out.println(bd.getDato(1, "nombre"));
-		System.out.println(bd.getDato(1, "valor_compra"));
-		// System.out.println(bd.Vertodos("producto"));
+		System.out.println(bd.getDato(1, "valor_venta"));
+                bd.borrarRegistro(3);
 		bd.closeConnection();
 	}
 
