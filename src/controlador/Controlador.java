@@ -2,10 +2,16 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Array;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import modelo.BaseDatos;
 import vista.Inicio;
 import vista.InicioPanelAcciones;
+import vista.VPPanelAcciones;
+import vista.VPPanelInputs;
 import vista.VentanaPrincipal;
 
 public class Controlador implements ActionListener {
@@ -26,9 +32,10 @@ public class Controlador implements ActionListener {
 		vista = new VentanaPrincipal();
 		inicio = new Inicio();
 		bd = new BaseDatos();
-		pruebaConexion();
+		// pruebaConexion();
 
 		this._asignarOyentes();
+		this.refrescarTabla();
 	}
 
 	// ============================================
@@ -37,6 +44,8 @@ public class Controlador implements ActionListener {
 
 	public void pruebaConexion() {
 		bd.EstableciendoConexion();
+
+		// this.vista.getPanelTable().cargarDatos();
 
 		System.out.println(bd.getDato(1004, "nombre"));
 		System.out.println(bd.getDato(1004, "categoria"));
@@ -47,7 +56,7 @@ public class Controlador implements ActionListener {
 		// System.out.println(bd.getDato(1001, "nombre"));
 		// System.out.println(bd.getDato(1001, "valorVenta"));
 		bd.borrarRegistro(1006);
-		bd.InsertarRegistro(1006, "Metro", "Herramientas", 20000, 23000, 2);
+		bd.insertarRegistro(1006, "Metro", "Herramientas", 20000, 23000, 2);
 		System.out.println(bd.getDato(1004, "nombre"));
 		System.out.println(bd.getDato(1004, "nombre"));
 		/*
@@ -61,12 +70,35 @@ public class Controlador implements ActionListener {
 		 * "nombre")); System.out.println(bd.getDato(1001, "valorVenta"));
 		 * bd.borrarRegistro(1002);
 		 */
-		String registro = bd.InsertarRegistro(1008, "cemento blanco x bulto ", "Contrucci贸n", 2320, 2600, 13);
+		Boolean registro = bd.insertarRegistro(1008, "cemento blanco x bulto ", "Contrucci贸n", 2320, 2600, 13);
 		System.out.println(bd.getDato(1007, "nombre"));
 		System.out.println(bd.getDato(1007, "cantidadProducto"));
 
 		bd.closeConnection();
 
+	}
+
+	public void refrescarTabla() {
+		try {
+			ResultSet rs = null;
+			ArrayList<String[]> resultados = new ArrayList<>();
+			bd.EstableciendoConexion();
+			rs = bd.Vertodos();
+			while (rs.next()) {
+				String[] fila = new String[6];
+				fila[0] = rs.getString(1);
+				fila[1] = rs.getString(2);
+				fila[2] = rs.getString(3);
+				fila[3] = rs.getString(4);
+				fila[4] = rs.getString(5);
+				fila[5] = rs.getString(6);
+
+				resultados.add(fila);
+			}
+			vista.getPanelTable().cargarDatos(resultados);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	// ============================================
@@ -76,6 +108,12 @@ public class Controlador implements ActionListener {
 	private void _asignarOyentes() {
 		this.inicio.getInicioPapelAcciones().getBtnIngresar().addActionListener(this);
 		this.inicio.getInicioPapelAcciones().getBtnVerListado().addActionListener(this);
+
+		this.vista.getPanelInputs().getBtnBuscar().addActionListener(this);
+
+		this.vista.getPanelAcciones().getBtnAgregar().addActionListener(this);
+		this.vista.getPanelAcciones().getBtnActualizar().addActionListener(this);
+		this.vista.getPanelAcciones().getBtnEliminar().addActionListener(this);
 	}
 
 	// ============================================
@@ -85,6 +123,8 @@ public class Controlador implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		bd = new BaseDatos();
+		bd.EstableciendoConexion();
+
 		String actionCommand = e.getActionCommand();
 		System.out.println(actionCommand);
 
@@ -98,49 +138,75 @@ public class Controlador implements ActionListener {
 			if (username.equals("admin") && password.equals("12345")) {
 				this.inicio.setVisible(false);
 				this.vista.setVisible(true);
+				this.refrescarTabla();
 			} else {
 				// Show error message
-				this.vista.showError("Usuario y/o contrase馻 incorrecta");
+				this.vista.mostrarError("Usuario y/o contrase馻 incorrecta");
+			}
+			// Agregar nuevo registro
+		} else if (actionCommand.equals(VPPanelAcciones.BTN_AGREGAR)) {
+			Object[] datos = this.vista.getPanelInputs().obtenerDatos();
+
+			Boolean response = bd.insertarRegistro((Integer) datos[0], (String) datos[1], (String) datos[2],
+					(Integer) datos[3], (Integer) datos[4], (Integer) datos[5]);
+			if (response) {
+				this.vista.mostrarInformacion("Agregado exitosamente");
+				this.refrescarTabla();
+				this.vista.getPanelInputs().limpiarCampos();
+			} else {
+				this.vista.mostrarError("Ha ocurrido un error");
+			}
+			// Actualizar elemento
+		} else if (actionCommand.equals(VPPanelAcciones.BTN_ACTUALIZAR)) {
+			Object[] datos = this.vista.getPanelInputs().obtenerDatos();
+
+			boolean respuesta = this.bd.actualizarDato(datos);
+			
+			if (respuesta) {
+				this.vista.mostrarInformacion("Actualizado exitosamente");
+				this.refrescarTabla();
+				this.vista.getPanelInputs().limpiarCampos();
+			} else {
+				this.vista.mostrarError("Ha ocurrido un error");
+			}
+			// Eliminar elemento
+		} else if (actionCommand.equals(VPPanelAcciones.BTN_ELIMINAR)) {
+			String referencia = this.vista.obtenerDato("Ingrese la referencia del elemento a eliminar");
+
+			boolean respuesta = this.bd.borrarRegistro(Integer.parseInt(referencia));
+
+			if (respuesta) {
+				this.vista.mostrarInformacion("Se ha eliminado exitosamente");
+				this.refrescarTabla();
+			} else {
+				this.vista.mostrarError("Ha ocurrido un error");
+			}
+		} else if (actionCommand.equals(VPPanelInputs.BTN_BUSCAR)) {
+			try {
+				int idReferencia = (Integer) this.vista.getPanelInputs().getTxtReferencia().getValue();
+				ResultSet response = this.bd.consultarID(idReferencia);
+				response.next();
+
+				Object[] elemento = new Object[6];
+				elemento[0] = response.getInt(1);
+				elemento[1] = response.getString(2);
+				elemento[2] = response.getString(3);
+				elemento[3] = response.getInt(4);
+				elemento[4] = response.getInt(5);
+				elemento[5] = response.getInt(6);
+
+				this.vista.getPanelInputs().cargarElemento(elemento);
+
+			} catch (SQLException exception) {
+				exception.printStackTrace();
+				this.vista.mostrarError("Ha ocurrido un error al consultar la referencia, verifique que exista.");
+			} catch (Exception exception) {
+				exception.printStackTrace();
+				this.vista.mostrarError("Ha ocurrido un error. " + exception.getMessage());
 			}
 
-			System.out.println("aaa");
-			System.out.println(username + " - " + password);
-
-			// this.inicio.setVisible(false);
-			// this.vista.setVisible(true);
-			// Bot贸n nuevo registro
-		} else if (actionCommand.equals(InicioPanelAcciones.Nuevo_Registro_BD)) {
-			try {
-				/*
-				 * //toma todos los datos de entrada int id =
-				 * Integer.parseInt(vista.getPanel().getCampoDocumento().getText()); String
-				 * Nombre = vista.getPanel().getCampoNombre().getText(); String categoria = int
-				 * valorCompra = int valorVenta = int cantidadProducto =
-				 */
-				bd.EstableciendoConexion();
-				// String respuesta = bd.InsertarRegistro(id, nombre, categor铆a, valorCompra,
-				// valorVenta, cantidadProducto);
-			} catch (Exception ex) {
-				System.out.println("Problema al insertar la informaci贸n.");
-			}
-			bd.closeConnection();
-			// Bot贸n para ver BD
-		} else if (actionCommand.equals(InicioPanelAcciones.Ver_BD)) {
-			ResultSet rs = null;
-			String resultados = "";
-			bd.EstableciendoConexion();
-			rs = bd.Vertodos();
-			try {
-				while (rs.next()) {
-					resultados += rs.getString(1) + " -  " + rs.getString(2) + " -  " + rs.getString(3) + " -  "
-							+ rs.getString(4) + " -  " + rs.getString(6) + " -  " + rs.getString(6) + "\n";
-				}
-				vista.mostrarInformacion(resultados);
-			} catch (Exception ex) {
-				System.out.println("Problema al imprimir la informaci贸n.");
-			}
-			bd.closeConnection();
 		}
 
+		bd.closeConnection();
 	}
 }
