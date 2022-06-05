@@ -27,9 +27,13 @@ public class VentanaPrincipal extends JFrame {
 	// ============================================
 	// Public methods
 	// ============================================
-	
+
 	public void showError(String message) {
 		JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public void mostrarInformacion(String mensaje) {
+		JOptionPane.showMessageDialog(null, mensaje);
 	}
 
 	// ============================================

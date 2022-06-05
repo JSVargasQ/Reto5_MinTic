@@ -38,13 +38,14 @@ public class BaseDatos {
         String user = mispropiedades.getProperty("usuario");
         String pass = mispropiedades.getProperty("pass");
         String url = "jdbc:mysql://" + iploc + ":3306/" + db + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+        
         try {
-            System.out.println("Conexion creada con exito");
             Class.forName("com.mysql.cj.jdbc.Driver");
             conexion = (Connection) DriverManager.getConnection(url, user, pass);
+            System.out.println("Conexion creada con exito");
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Error en establecer conexion");
             e.printStackTrace();
+            System.out.println("Error en establecer conexion");
         }
     }
 
@@ -60,7 +61,7 @@ public class BaseDatos {
     public ResultSet Vertodos() {
         PreparedStatement ps;
         ResultSet rs = null;
-        String sql = "SELECT * FROM producto";
+        String sql = "SELECT * FROM ferreteria";
         try {
             ps = conexion.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -73,7 +74,7 @@ public class BaseDatos {
     public ResultSet consultarID(int id) {
         PreparedStatement ps;
         ResultSet rs = null;
-        String sql = "SELECT * FROM producto WHERE idproducto = ? ";
+        String sql = "SELECT * FROM ferreteria WHERE referencia = ? ";
         try {
             ps = conexion.prepareStatement(sql);
             ps.setInt(1, id);
@@ -85,18 +86,23 @@ public class BaseDatos {
         return rs;
     }
 
-    public String InsertarRegistro(int id, String Nombre) {
+    public String InsertarRegistro(int id, String Nombre, String Categoria, int valorCompra, int valorVenta, int cantidadProducto) {
         PreparedStatement ps;
-        String sql = "INSERT INTO persona(id,nombre) VALUES (?,?)";
+        String sql = "INSERT INTO ferreteria (referencia, nombre, categoria, valorCompra, valorVenta, cantidadProducto) VALUES (?,?, ?, ?, ?, ?)";
         try {
             ps = conexion.prepareStatement(sql);
             ps.setInt(1, id);
             ps.setString(2, Nombre);
+            ps.setString(3, Categoria);
+            ps.setInt(4, valorCompra);
+            ps.setInt(5, valorVenta);
+            ps.setInt(6, cantidadProducto);
             int contador = ps.executeUpdate();
+            System.out.println("contador " + contador);
             if (contador > 0) {
                 return "Se agregó el registro de manera exitosa";
             } else {
-                return "Ocurrio un problema al agregar el registro";
+                return "Ocurrió un problema al agregar el registro";
 
             }
         } catch (SQLException e) {
@@ -108,7 +114,7 @@ public class BaseDatos {
     //Metodo para borrar registros
     public void borrarRegistro(int id){
         try{
-            String Query = "DElETE FROM producto WHERE idproducto = " + id + ";";
+            String Query = "DElETE FROM ferreteria WHERE referencia = " + id + ";";
             Statement st = conexion.createStatement();
             st.executeUpdate(Query);
             if(st.getUpdateCount() == 1){
@@ -122,7 +128,7 @@ public class BaseDatos {
     public String getDato(int id, String columna){
         String dato = "";
         try{
-            String Query = "SELECT * FROM producto WHERE idproducto = " + id + ";";
+            String Query = "SELECT * FROM ferreteria WHERE referencia = " + id + ";";
             Statement st = conexion.createStatement();
             ResultSet rS;
             rS = st.executeQuery(Query);
@@ -136,7 +142,7 @@ public class BaseDatos {
     //Metodo para actualizar campos de texto
     public void setDato(int id, String columna, String dato){
         try{
-            String Query = "UPDATE producto SET " +columna  + " = " + "'" + dato + "'" + " WHERE idproducto =  " + id + ";";
+            String Query = "UPDATE ferreteria SET " +columna  + " = " + "'" + dato + "'" + " WHERE referencia =  " + id + ";";
             Statement st = conexion.createStatement();
             st.executeUpdate(Query);
             if(st.getUpdateCount() == 1){
@@ -147,9 +153,9 @@ public class BaseDatos {
         }
     }
     //Metodo para actualizar campos de valores numericos
-    public void setDatoV2(int id, String columna, int dato){
+    public void setDatoV2(int id, String columna, String dato){
         try{
-            String Query = "UPDATE producto SET " +columna  + " = " + dato + " WHERE idproducto =  " + id + ";";
+            String Query = "UPDATE ferreteria SET " +columna  + " = " + dato + " WHERE referencia =  " + id + ";";
             Statement st = conexion.createStatement();
             st.executeUpdate(Query);
             if(st.getUpdateCount() == 1){

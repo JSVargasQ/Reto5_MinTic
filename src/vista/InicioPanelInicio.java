@@ -47,7 +47,7 @@ public class InicioPanelInicio extends JPanel {
 		txtUsuario = new JTextField();
 		add(txtUsuario);
 
-		lbContrasena = new JLabel("Contraseña: ");
+		lbContrasena = new JLabel("ContraseÃ±a: ");
 		add(lbContrasena);
 
 		passContrasena = new JPasswordField();

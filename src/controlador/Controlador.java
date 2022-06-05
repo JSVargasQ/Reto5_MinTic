@@ -37,16 +37,36 @@ public class Controlador implements ActionListener {
 
 	public void pruebaConexion() {
 		bd.EstableciendoConexion();
-		System.out.println(bd.getDato(1, "nombre"));
-		System.out.println(bd.getDato(1, "valor_compra"));
-		System.out.println(bd.getDato(1, "valor_venta"));
-		System.out.println(bd.getDato(1, "cantidad"));
-		System.out.println(bd.getDato(1, "categoria"));
-                bd.setDatoV2(1, "valor_venta", 5);
-		System.out.println(bd.getDato(1, "nombre"));
-		System.out.println(bd.getDato(1, "valor_venta"));
-                bd.borrarRegistro(3);
+
+		System.out.println(bd.getDato(1004, "nombre"));
+		System.out.println(bd.getDato(1004, "categoria"));
+		System.out.println(bd.getDato(1004, "valorCompra"));
+		System.out.println(bd.getDato(1004, "valorVenta"));
+		System.out.println(bd.getDato(1004, "cantidadProducto"));
+		// bd.setDatoV2(1001, "valorVenta", "5");
+		// System.out.println(bd.getDato(1001, "nombre"));
+		// System.out.println(bd.getDato(1001, "valorVenta"));
+		bd.borrarRegistro(1006);
+		bd.InsertarRegistro(1006, "Metro", "Herramientas", 20000, 23000, 2);
+		System.out.println(bd.getDato(1004, "nombre"));
+		System.out.println(bd.getDato(1004, "nombre"));
+		/*
+		 * System.out.println(bd.getDato(1001, "nombre"));
+		 * System.out.println(bd.getDato(1001, "categoria"));
+		 * System.out.println(bd.getDato(1001, "valorCompra"));
+		 * System.out.println(bd.getDato(1001, "valorVenta"));
+		 * System.out.println(bd.getDato(1001, "cantidadProducto"));
+		 * 
+		 * bd.setDatoV2(1001, "valorVenta", 5); System.out.println(bd.getDato(1001,
+		 * "nombre")); System.out.println(bd.getDato(1001, "valorVenta"));
+		 * bd.borrarRegistro(1002);
+		 */
+		String registro = bd.InsertarRegistro(1008, "cemento blanco x bulto ", "Contrucci贸n", 2320, 2600, 13);
+		System.out.println(bd.getDato(1007, "nombre"));
+		System.out.println(bd.getDato(1007, "cantidadProducto"));
+
 		bd.closeConnection();
+
 	}
 
 	// ============================================
@@ -55,6 +75,7 @@ public class Controlador implements ActionListener {
 
 	private void _asignarOyentes() {
 		this.inicio.getInicioPapelAcciones().getBtnIngresar().addActionListener(this);
+		this.inicio.getInicioPapelAcciones().getBtnVerListado().addActionListener(this);
 	}
 
 	// ============================================
@@ -63,7 +84,7 @@ public class Controlador implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// bd = new BaseDatos();
+		bd = new BaseDatos();
 		String actionCommand = e.getActionCommand();
 		System.out.println(actionCommand);
 
@@ -72,9 +93,9 @@ public class Controlador implements ActionListener {
 			// Get username & password
 			String username = this.inicio.getPanelInicio().getTxtUsuario().getText();
 			String password = this.inicio.getPanelInicio().getPassContrasena().getText();
-			
+
 			// Validate user and password
-			if( username.equals("admin") && password.equals("12345") ) {
+			if (username.equals("admin") && password.equals("12345")) {
 				this.inicio.setVisible(false);
 				this.vista.setVisible(true);
 			} else {
@@ -82,7 +103,44 @@ public class Controlador implements ActionListener {
 				this.vista.showError("Usuario y/o contrase馻 incorrecta");
 			}
 
-			
+			System.out.println("aaa");
+			System.out.println(username + " - " + password);
+
+			// this.inicio.setVisible(false);
+			// this.vista.setVisible(true);
+			// Bot贸n nuevo registro
+		} else if (actionCommand.equals(InicioPanelAcciones.Nuevo_Registro_BD)) {
+			try {
+				/*
+				 * //toma todos los datos de entrada int id =
+				 * Integer.parseInt(vista.getPanel().getCampoDocumento().getText()); String
+				 * Nombre = vista.getPanel().getCampoNombre().getText(); String categoria = int
+				 * valorCompra = int valorVenta = int cantidadProducto =
+				 */
+				bd.EstableciendoConexion();
+				// String respuesta = bd.InsertarRegistro(id, nombre, categor铆a, valorCompra,
+				// valorVenta, cantidadProducto);
+			} catch (Exception ex) {
+				System.out.println("Problema al insertar la informaci贸n.");
+			}
+			bd.closeConnection();
+			// Bot贸n para ver BD
+		} else if (actionCommand.equals(InicioPanelAcciones.Ver_BD)) {
+			ResultSet rs = null;
+			String resultados = "";
+			bd.EstableciendoConexion();
+			rs = bd.Vertodos();
+			try {
+				while (rs.next()) {
+					resultados += rs.getString(1) + " -  " + rs.getString(2) + " -  " + rs.getString(3) + " -  "
+							+ rs.getString(4) + " -  " + rs.getString(6) + " -  " + rs.getString(6) + "\n";
+				}
+				vista.mostrarInformacion(resultados);
+			} catch (Exception ex) {
+				System.out.println("Problema al imprimir la informaci贸n.");
+			}
+			bd.closeConnection();
 		}
+
 	}
 }
