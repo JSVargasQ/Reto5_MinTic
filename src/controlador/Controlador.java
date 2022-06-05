@@ -27,7 +27,7 @@ public class Controlador implements ActionListener {
 		inicio = new Inicio();
 		bd = new BaseDatos();
 		pruebaConexion();
-                
+
 		this._asignarOyentes();
 	}
 
@@ -72,12 +72,17 @@ public class Controlador implements ActionListener {
 			// Get username & password
 			String username = this.inicio.getPanelInicio().getTxtUsuario().getText();
 			String password = this.inicio.getPanelInicio().getPassContrasena().getText();
+			
+			// Validate user and password
+			if( username.equals("admin") && password.equals("12345") ) {
+				this.inicio.setVisible(false);
+				this.vista.setVisible(true);
+			} else {
+				// Show error message
+				this.vista.showError("Usuario y/o contraseña incorrecta");
+			}
 
-			System.out.println("aaa");
-			System.out.println(username + " - " + password);
-
-			// this.inicio.setVisible(false);
-			// this.vista.setVisible(true);
+			
 		}
 	}
 }

@@ -63,40 +63,21 @@ public class InicioPanelInicio extends JPanel {
 		return lbUsuario;
 	}
 
-	public void setLbUsuario(JLabel lbUsuario) {
-		this.lbUsuario = lbUsuario;
-	}
-
 	public JLabel getLbContrasena() {
 		return lbContrasena;
-	}
-
-	public void setLbContrasena(JLabel lbContrasena) {
-		this.lbContrasena = lbContrasena;
 	}
 
 	public JLabel getLbImagen() {
 		return lbImagen;
 	}
 
-	public void setLbImagen(JLabel lbImagen) {
-		this.lbImagen = lbImagen;
-	}
 
 	public JTextField getTxtUsuario() {
 		return txtUsuario;
 	}
 
-	public void setTxtUsuario(JTextField txtUsuario) {
-		this.txtUsuario = txtUsuario;
-	}
-
 	public JPasswordField getPassContrasena() {
 		return passContrasena;
-	}
-
-	public void setPassContrasena(JPasswordField passContrasena) {
-		this.passContrasena = passContrasena;
 	}
 
 }

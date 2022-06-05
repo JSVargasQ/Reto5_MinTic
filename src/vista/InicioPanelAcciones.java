@@ -49,7 +49,6 @@ public class InicioPanelAcciones extends JPanel {
 
 		this.btnIngresar.setActionCommand(BTN_LOGIN_INICIO);
 		this.add(btnIngresar);
-
 	}
 
 	// ============================================
