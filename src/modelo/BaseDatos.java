@@ -1,3 +1,10 @@
+/**
+ ----- Autores ------
+ * Andres David Gonzalez Murcia
+ * Juan Sebastian Vargas Quintero
+ * Erika Nathalia Gama
+ Ciclo 2 - Grupo 6
+ */
 package modelo;
 
 import java.io.FileNotFoundException;

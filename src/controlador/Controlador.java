@@ -1,3 +1,10 @@
+/**
+ ----- Autores ------
+ * Andres David Gonzalez Murcia
+ * Juan Sebastian Vargas Quintero
+ * Erika Nathalia Gama
+ Ciclo 2 - Grupo 6
+ */
 package controlador;
 
 import java.awt.event.ActionEvent;
@@ -32,8 +39,6 @@ public class Controlador implements ActionListener {
 		vista = new VentanaPrincipal();
 		inicio = new Inicio();
 		bd = new BaseDatos();
-		// pruebaConexion();
-
 		this._asignarOyentes();
 		this.refrescarTabla();
 	}
@@ -141,7 +146,7 @@ public class Controlador implements ActionListener {
 				this.refrescarTabla();
 			} else {
 				// Show error message
-				this.vista.mostrarError("Usuario y/o contraseña incorrecta");
+				this.vista.mostrarError("Usuario y/o contraseï¿½a incorrecta");
 			}
 			// Agregar nuevo registro
 		} else if (actionCommand.equals(VPPanelAcciones.BTN_AGREGAR)) {
